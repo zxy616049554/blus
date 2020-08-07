@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.DownloadMessDao">
+
+    <resultMap type="com.rk.entity.DownloadMess" id="resultMapOfDownloadMess">
+        <result column="d_id" property="dId" />
+        <result column="d_url" property="dUrl" />
+        <result column="d_type" property="dType" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+    </resultMap>
+  
+    <sql id="FieldsOfDownloadMessDao">d_id, d_url, d_type, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+	
+	<sql id="FieldsOfDownloadMessDaoWithoutId">d_id, d_url, d_type, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfDownloadMess" parameterType="java.util.Map">
+        select <include refid="FieldsOfDownloadMessDao" /> from download_mess
+        <where>
+			<if test="dId != null"> and d_id = #{dId}</if>
+			<if test="dUrl != null"> and d_url = #{dUrl}</if>
+			<if test="dType != null"> and d_type = #{dType}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.DownloadMess" useGeneratedKeys="true" keyProperty="id">
+        insert into download_mess(
+            <include refid="FieldsOfDownloadMessDaoWithoutId" />
+		) values (
+			 #{dId},#{dUrl}, #{dType}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.DownloadMess" useGeneratedKeys="true" keyProperty="id">
+		update download_mess
+		<set>
+			<if test="dId != null"> d_id  = #{dId},</if>
+			<if test="dUrl != null"> d_url  = #{dUrl},</if>
+			<if test="dType != null"> d_type  = #{dType},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+</mapper>

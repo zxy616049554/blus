@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.WxPlatformDao">
+
+    <resultMap type="com.rk.entity.WxPlatform" id="resultMapOfWxPlatform">
+        <result column="platformId" property="platformId" />
+        <result column="platformAccount" property="platformAccount" />
+        <result column="platformPassword" property="platformPassword" />
+        <result column="platformKey" property="platformKey" />
+        <result column="platformUrl" property="platformUrl" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+    </resultMap>
+  
+    <sql id="FieldsOfWxPlatformDao">platformId, platformAccount, platformPassword, platformKey, platformUrl, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+	
+	<sql id="FieldsOfWxPlatformDaoWithoutId">platformId, platformAccount, platformPassword, platformKey, platformUrl, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfWxPlatform" parameterType="java.util.Map">
+        select <include refid="FieldsOfWxPlatformDao" /> from wx_platform
+        <where>
+			<if test="platformId != null"> and platformId = #{platformId}</if>
+			<if test="platformAccount != null"> and platformAccount = #{platformAccount}</if>
+			<if test="platformPassword != null"> and platformPassword = #{platformPassword}</if>
+			<if test="platformKey != null"> and platformKey = #{platformKey}</if>
+			<if test="platformUrl != null"> and platformUrl = #{platformUrl}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.WxPlatform" useGeneratedKeys="true" keyProperty="id">
+        insert into wx_platform(
+            <include refid="FieldsOfWxPlatformDaoWithoutId" />
+		) values (
+			#{platformId}, #{platformAccount}, #{platformPassword}, #{platformKey}, #{platformUrl}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.WxPlatform" useGeneratedKeys="true" keyProperty="id">
+		update wx_platform
+		<set>
+			<if test="platformId != null"> platformId  = #{platformId},</if>
+			<if test="platformAccount != null"> platformAccount  = #{platformAccount},</if>
+			<if test="platformPassword != null"> platformPassword  = #{platformPassword},</if>
+			<if test="platformKey != null"> platformKey  = #{platformKey},</if>
+			<if test="platformUrl != null"> platformUrl  = #{platformUrl},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+</mapper>

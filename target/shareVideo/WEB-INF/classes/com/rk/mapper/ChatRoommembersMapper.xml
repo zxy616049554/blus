@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.ChatRoommembersDao">
+
+    <resultMap type="com.rk.entity.ChatRoommembers" id="resultMapOfChatRoommembers">
+        <result column="chat_id" property="chatId" />
+        <result column="chatRoomId" property="chatRoomId" />
+        <result column="chatUserName" property="chatUserName" />
+        <result column="chatNickName" property="chatNickName" />
+        <result column="displayName" property="displayName" />
+        <result column="InviterUserName" property="inviterUserName" />
+        <result column="bigHeadImgUrl" property="bigHeadImgUrl" />
+        <result column="smallHeadImgUrl" property="smallHeadImgUrl" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+    </resultMap>
+  
+    <sql id="FieldsOfChatRoommembersDao">chat_id, chatRoomId, chatUserName, chatNickName,displayName, InviterUserName,bigHeadImgUrl,
+       smallHeadImgUrl, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+	
+	<sql id="FieldsOfChatRoommembersDaoWithoutId">chat_id, chatRoomId, chatUserName, chatNickName,displayName, InviterUserName,bigHeadImgUrl,
+       smallHeadImgUrl, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfChatRoommembers" parameterType="java.util.Map">
+        select <include refid="FieldsOfChatRoommembersDao" /> from chat_roommembers
+        <where>
+			<if test="chatId != null"> and chat_id = #{chatId}</if>
+			<if test="chatRoomId != null"> and chatRoomId = #{chatRoomId}</if>
+			<if test="chatUserName != null"> and chatUserName = #{chatUserName}</if>
+			<if test="chatNickName != null"> and chatNickName = #{chatNickName}</if>
+			<if test="displayName != null"> and displayName = #{displayName}</if>
+			<if test="inviterUserName != null"> and InviterUserName = #{inviterUserName}</if>
+			<if test="bigHeadImgUrl != null"> and bigHeadImgUrl = #{bigHeadImgUrl}</if>
+			<if test="smallHeadImgUrl != null"> and smallHeadImgUrl = #{smallHeadImgUrl}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.ChatRoommembers" useGeneratedKeys="true" keyProperty="id">
+        insert into chat_roommembers(
+            <include refid="FieldsOfChatRoommembersDaoWithoutId" />
+		) values (
+			#{chatId}, #{chatRoomId}, #{chatUserName}, #{chatNickName},#{displayName}, #{inviterUserName},#{bigHeadImgUrl},#{smallHeadImgUrl},
+			#{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.ChatRoommembers" useGeneratedKeys="true" keyProperty="id">
+		update chat_roommembers
+		<set>
+			<if test="chatId != null"> chat_id  = #{chatId},</if>
+			<if test="chatRoomId != null"> chatRoomId  = #{chatRoomId},</if>
+			<if test="chatUserName != null"> chatUserName  = #{chatUserName},</if>
+			<if test="chatNickName != null"> chatNickName  = #{chatNickName},</if>
+			<if test="displayName != null"> displayName  = #{displayName},</if>
+			<if test="inviterUserName != null"> InviterUserName  = #{inviterUserName},</if>
+			<if test="bigHeadImgUrl != null"> and bigHeadImgUrl = #{bigHeadImgUrl},</if>
+			<if test="smallHeadImgUrl != null"> and smallHeadImgUrl = #{smallHeadImgUrl},</if>
+			<if test="standby1 != null"> and standby1 = #{standby1},</if>
+			<if test="standby2 != null"> and standby2 = #{standby2},</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate},</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime},</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate},</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="getMessChatRooms" resultMap="resultMapOfChatRoommembers" parameterType="java.util.Map">
+        select <include refid="FieldsOfChatRoommembersDao" /> from chat_roommembers
+        <where>
+			<if test="roomId != null"> and chatRoomId = #{roomId}</if>
+	    </where>
+	</select>
+
+    <select id="getMessChatRoomsByUserId" resultMap="resultMapOfChatRoommembers">
+        select <include refid="FieldsOfChatRoommembersDao" /> from chat_roommembers
+        <where>
+			<if test="userId != null"> and chatUserName = #{userId}</if>
+	    </where>
+	</select>
+	<select id="getMesschatRoomsByDisplayName" resultMap="resultMapOfChatRoommembers">
+        select <include refid="FieldsOfChatRoommembersDao" /> from chat_roommembers
+        <where>
+			<if test="displayName != null"> and displayName = #{displayName}</if>
+	    </where>
+	</select>
+</mapper>

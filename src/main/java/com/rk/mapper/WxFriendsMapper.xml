@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.WxFriendsDao">
+
+    <resultMap type="com.rk.entity.WxFriends" id="resultMapOfWxFriends">
+        <result column="f_id" property="fId" />
+        <result column="userwcId" property="userwcId" />
+        <result column="friendwcId" property="friendwcId" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+        <result column="friendNickName" property="friendNickName" />
+        <result column="friendRemark" property="friendRemark" />
+        <result column="friendSignature" property="friendSignature" />
+        <result column="friendSex" property="friendSex" />
+        <result column="aliasName" property="aliasName" />
+        <result column="country" property="country" />
+        <result column="bigHead" property="bigHead" />
+        <result column="smallHead" property="smallHead" />
+        <result column="labelList" property="labelList" />
+        <result column="v1" property="v1" />
+    </resultMap>
+  
+    <sql id="FieldsOfWxFriendsDao">f_id, userwcId, friendwcId, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime,
+       friendNickName, friendRemark, friendSignature, friendSex, aliasName, country, bigHead, smallHead, labelList, v1</sql>
+	
+	<sql id="FieldsOfWxFriendsDaoWithoutId">f_id, userwcId, friendwcId, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime,
+       friendNickName, friendRemark, friendSignature, friendSex, aliasName, country, bigHead, smallHead, labelList, v1</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfWxFriends" parameterType="java.util.Map">
+        select <include refid="FieldsOfWxFriendsDao" /> from wx_friends
+        <where>
+			<if test="fId != null"> and f_id = #{fId}</if>
+			<if test="userwcId != null"> and userwcId = #{userwcId}</if>
+			<if test="friendwcId != null"> and friendwcId = #{friendwcId}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+			<if test="friendNickName != null"> and friendNickName = #{friendNickName}</if>
+			<if test="friendRemark != null"> and friendRemark = #{friendRemark}</if>
+			<if test="friendSignature != null"> and friendSignature = #{friendSignature}</if>
+			<if test="friendSex != null"> and friendSex = #{friendSex}</if>
+			<if test="aliasName != null"> and aliasName = #{aliasName}</if>
+			<if test="country != null"> and country = #{country}</if>
+			<if test="bigHead != null"> and bigHead = #{bigHead}</if>
+			<if test="smallHead != null"> and smallHead = #{smallHead}</if>
+			<if test="labelList != null"> and labelList = #{labelList}</if>
+			<if test="v1 != null"> and v1 = #{v1}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.WxFriends" useGeneratedKeys="true" keyProperty="id">
+        insert into wx_friends(
+            <include refid="FieldsOfWxFriendsDaoWithoutId" />
+		) values (
+			#{fId}, #{userwcId}, #{friendwcId}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}, #{friendNickName},
+			#{friendRemark}, #{friendSignature}, #{friendSex}, #{aliasName},  #{country}, #{bigHead}, #{smallHead}, #{labelList}, #{v1}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.WxFriends" useGeneratedKeys="true" keyProperty="id">
+		update wx_friends
+		<set>
+			<if test="fId != null"> f_id  = #{fId},</if>
+			<if test="userwcId != null"> userwcId  = #{userwcId},</if>
+			<if test="friendwcId != null"> friendwcId  = #{friendwcId},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+			<if test="friendNickName != null"> and friendNickName = #{friendNickName},</if>
+			<if test="friendRemark != null"> and friendRemark = #{friendRemark},</if>
+			<if test="friendSignature != null"> and friendSignature = #{friendSignature},</if>
+			<if test="friendSex != null"> and friendSex = #{friendSex},</if>
+			<if test="aliasName != null"> and aliasName = #{aliasName},</if>
+			<if test="country != null"> and country = #{country},</if>
+			<if test="bigHead != null"> and bigHead = #{bigHead},</if>
+			<if test="smallHead != null"> and smallHead = #{smallHead},</if>
+			<if test="labelList != null"> and labelList = #{labelList},</if>
+			<if test="v1 != null"> and v1 = #{v1},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="getMessByWcId" resultMap="resultMapOfWxFriends">
+        select <include refid="FieldsOfWxFriendsDao" /> from wx_friends
+        <where>
+			<if test="wcid != null"> and friendwcId = #{wcid}</if>
+		</where>
+	</select>
+
+    <select id="getFriendsMessByWcIds" resultMap="resultMapOfWxFriends">
+        select <include refid="FieldsOfWxFriendsDao" /> from wx_friends
+        <where>
+			<if test="wcId != null"> and userwcId = #{wcId}</if>
+		</where>
+	</select>
+</mapper>

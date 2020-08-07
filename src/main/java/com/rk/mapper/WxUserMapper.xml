@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.WxUserDao">
+
+    <resultMap type="com.rk.entity.WxUser" id="resultMapOfWxUser">
+        <result column="userId" property="userId" />
+        <result column="userwcId" property="userwcId" />
+        <result column="userwid" property="userwid" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+        <result column="userAccount" property="userAccount" />
+        <result column="userCountry" property="userCountry" />
+        <result column="userCity" property="userCity" />
+        <result column="userSignature" property="userSignature" />
+        <result column="userNickName" property="userNickName" />
+        <result column="userSex" property="userSex" />
+        <result column="userHeadUrl" property="userHeadUrl" />
+        <result column="smallHeadImgUrl" property="smallHeadImgUrl" />
+        <result column="status" property="status" />
+    </resultMap>
+  
+    <sql id="FieldsOfWxUserDao">userId, userwcId, userwid, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime,
+       userAccount, userCountry, userCity, userSignature, userNickName, userSex, userHeadUrl, smallHeadImgUrl, status
+    </sql>
+	
+	<sql id="FieldsOfWxUserDaoWithoutId">userId, userwcId, userwid, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime,
+	   userAccount, userCountry, userCity, userSignature, userNickName, userSex, userHeadUrl, smallHeadImgUrl, status
+	</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfWxUser" parameterType="java.util.Map">
+        select <include refid="FieldsOfWxUserDao" /> from wx_user
+        <where>
+			<if test="userId != null"> and userId = #{userId}</if>
+			<if test="userwcId != null"> and userwcId = #{userwcId}</if>
+			<if test="userwid != null"> and userwid = #{userwid}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+			<if test="userAccount != null"> and userAccount = #{userAccount}</if>
+			<if test="userCountry != null"> and userCountry = #{userCountry}</if>
+			<if test="userCity != null"> and userCity = #{userCity}</if>
+			<if test="userSignature != null"> and userSignature = #{userSignature}</if>
+			<if test="userNickName != null"> and userNickName = #{userNickName}</if>
+			<if test="userSex != null"> and userSex = #{userSex}</if>
+			<if test="userHeadUrl != null"> and userHeadUrl = #{userHeadUrl}</if>
+			<if test="smallHeadImgUrl != null"> and smallHeadImgUrl = #{smallHeadImgUrl}</if>
+			<if test="status != null"> and status = #{status}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.WxUser" useGeneratedKeys="true" keyProperty="id">
+        insert into wx_user(
+            <include refid="FieldsOfWxUserDaoWithoutId" />
+		) values (
+			#{userId}, #{userwcId}, #{userwid}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime},#{userAccount},
+			#{userCountry}, #{userCity}, #{userSignature}, #{userNickName}, #{userSex}, #{userHeadUrl}, #{smallHeadImgUrl}, #{status}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.WxUser" useGeneratedKeys="true" keyProperty="id">
+		update wx_user
+		<set>
+			<if test="userwid != null"> userwid  = #{userwid},</if>
+		</set>
+		where userwcId  = #{userwcId}
+	</update>
+	
+	<select id="getMessByWcId" resultMap="resultMapOfWxUser">
+        select <include refid="FieldsOfWxUserDao" /> from wx_user
+        <where>
+			<if test="WcId != null"> and userwcId = #{WcId}</if>
+		</where>
+    </select>
+    
+    <select id="getUserMessByWId" resultMap="resultMapOfWxUser">
+        select <include refid="FieldsOfWxUserDao" /> from wx_user
+        <where>
+			<if test="WId != null"> and userwid = #{WId}</if>
+		</where>
+    </select>
+
+</mapper>

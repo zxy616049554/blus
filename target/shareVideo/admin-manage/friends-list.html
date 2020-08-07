@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>好友列表</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script type="text/javascript"
+	src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="./lib/layui/layui.js"
+	charset="utf-8"></script>
+<script type="text/javascript" src="./js/vue.min.js"></script>
+<script type="text/javascript" src="./js/axios.js"></script>
+<script type="text/javascript" src="./js/xadmin.js?v=1.0.0"></script>
+</head>
+
+<body>
+	<div class="layui-anim layui-anim-up" id="admin">
+		<div class="x-nav">
+			<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">好友列表</a>
+			</span> <a class="layui-btn layui-btn-small"
+				style="line-height: 1.6em; margin-top: 3px; float: right"
+				href="javascript:location.replace(location.href);" title="刷新"> <i
+				class="layui-icon" style="line-height: 30px">ဂ</i></a>
+		</div>
+		<div>
+			<form action="" @submit.prevent="fninit">
+				<div class="layui-input-inline layui-show-xs-block">
+					<button class="layui-btn" type="submit">
+						<i class="layui-icon">初始化</i>
+					</button>
+				</div>
+			</form>
+			<form action="" @submit.prevent="fnSearch">
+				<div class="layui-input-inline layui-show-xs-block">
+					<button class="layui-btn" type="submit">
+						<i class="layui-icon">获取好友列表</i>
+					</button>
+				</div>
+			</form>
+			<form action="" @submit.prevent="fnScendLogin">
+				<div class="layui-input-inline layui-show-xs-block">
+					<button class="layui-btn" type="submit">
+						<i class="layui-icon">掉线重连</i>
+					<tton>
+				</div>
+			</form>
+		</div>
+		<div class="x-body">
+			<xblock> <span class="x-right" style="line-height: 40px">共有数据：{{listCount}}
+				条</span> </xblock>
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this" data-status="1" @click="fnOrderTabs(1)">好友列表</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<table class="layui-table">
+							<thead>
+								<tr>
+									<th>微信ID</th>
+									<th>小头像</th>
+									<th>好友微信号</th>
+									<th>好友微信名称</th>
+									<th>好友备注</th>
+									<th>好友签名</th>
+									<th>微信号</th>
+									<th>性别</th>
+									<!-- <th>用户的wxId</th> -->
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(item,index) in list">
+									<td>{{item.userwcId}}</td>
+									<td><img alt="" :src="item.smallHead"/></td>
+									<td>{{item.friendwcId}}</td>
+									<td>{{item.friendNickName}}</td>
+									<td>{{item.friendRemark}}</td> 
+									<td>{{item.friendSignature}}</td>
+									<td>{{item.aliasName}}</td>
+									<td>
+										<span v-if="item.sex == '1'">男</span> 
+										<span v-if="item.sex == '2'">女</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+			layui.use(['layer', 'jquery', 'form'], function() {
+				var $ = layui.jquery,
+					layer = layui.layer,
+					form = layui.form;
+				new Vue({
+					el: '#admin',
+					data: {
+						formObj: {
+							userPhone: "",
+						},
+						listCount: 0,
+						list: [],
+						status: 1, // 1 支出 2 收入
+					},
+					mounted: function() {
+						var that = this;
+						var url = "login/010004";
+						//that.fnList(url);
+						//监听下拉
+					},
+					methods: {
+						
+						// 用户列表	
+						fnScendLogin: function() {
+							var that = this;
+							//加载层
+							var loadingFlag = layer.load(0, {
+								shade: false
+							}); //0代表加载的风格，支持0-2
+							axios({
+								url: apiHost + "login/010008",
+								data: {
+									"requestBody": {
+										"wId":sessionStorage.getItem("wId"),
+									}
+								},
+								method: "POST",
+							}).then(function(res) {
+								console.log(res)
+								var resultData = res.data.responseBody;
+								if(resultData.status.statusCode == '000000') {
+									layer.close(loadingFlag); // 关闭加载
+								
+								} else {
+									layer.close(loadingFlag); // 关闭加载
+									layer.msg(resultData.status.statusMessage, {
+										icon: 2,
+										time: 2000
+									});
+								}
+							}).catch(function(res) {
+								layer.close(loadingFlag); // 关闭加载
+								layer.msg('请求失败,请稍候再试', {
+									icon: 2,
+									time: 2000
+								});
+							})
+						},
+						fnSearch: function() {
+							var that = this;
+							//加载层
+							var loadingFlag = layer.load(0, {
+								shade: false
+							}); //0代表加载的风格，支持0-2
+							axios({
+								url: apiHost + "login/010005",
+								data: {
+									"requestBody": {
+										"wId":sessionStorage.getItem("wId"),
+									}
+								},
+								method: "POST",
+							}).then(function(res) {
+								console.log(res)
+								var resultData = res.data.responseBody;
+								if(resultData.status.statusCode == '000000') {
+									layer.close(loadingFlag); // 关闭加载
+									that.list = resultData.data;
+									that.listCount = resultData.data.length;
+								} else {
+									layer.close(loadingFlag); // 关闭加载
+									layer.msg(resultData.status.statusMessage, {
+										icon: 2,
+										time: 2000
+									});
+								}
+							}).catch(function(res) {
+								layer.close(loadingFlag); // 关闭加载
+								layer.msg('请求失败,请稍候再试', {
+									icon: 2,
+									time: 2000
+								});
+							})
+						},
+						fninit: function() {
+							var that = this;
+							//加载层
+							var loadingFlag = layer.load(0, {
+								shade: false
+							}); //0代表加载的风格，支持0-2
+							axios({
+								url: apiHost + "login/010004",
+								data: {
+									"requestBody": {
+										"wId":sessionStorage.getItem("wId"),
+									}
+								},
+								method: "POST",
+							}).then(function(res) {
+								console.log(res)
+								var resultData = res.data.responseBody;
+								if(resultData.status.statusCode == '000000') {
+									layer.close(loadingFlag); // 关闭加载
+								} else {
+									layer.close(loadingFlag); // 关闭加载
+									layer.msg(resultData.status.statusMessage, {
+										icon: 2,
+										time: 2000
+									});
+								}
+							}).catch(function(res) {
+								layer.close(loadingFlag); // 关闭加载
+								layer.msg('请求失败,请稍候再试', {
+									icon: 2,
+									time: 2000
+								});
+							})
+						},
+						// 时间戳转换成时间
+						timestampToTime: function(timestamp) {
+							var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000				    
+							Y = date.getFullYear() + '-';    
+							M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';    
+							if(date.getDate() < 10) {
+								D = '0' + date.getDate() + ''; 
+							} else {
+								D = date.getDate() + ''; 
+							}
+							h = date.getHours() + ':';    
+							m = date.getMinutes() + ':';    
+							s = date.getSeconds();    
+							return Y + M + D;  
+						},
+						fnList: function(url) {
+							var that = this;
+							//加载层
+							var loadingFlag = layer.load(0, {
+								shade: false
+							}); //0代表加载的风格，支持0-2
+							axios({
+								url: apiHost + url,
+								data: {
+									"requestBody": {
+										"userPhone": "18336731549",
+									}
+								},
+								method: "POST",
+							}).then(function(res) {
+								console.log(res)
+								var resultData = res.data.responseBody;
+								if(resultData.status.statusCode == '000000') {
+									layer.close(loadingFlag); // 关闭加载
+									that.list = resultData.data;
+									that.listCount = resultData.data.length;
+								} else {
+									layer.close(loadingFlag); // 关闭加载
+									layer.msg(resultData.status.statusMessage, {
+										icon: 2,
+										time: 2000
+									});
+								}
+							}).catch(function(res) {
+								layer.close(loadingFlag); // 关闭加载
+								layer.msg('请求失败,请稍候再试', {
+									icon: 2,
+									time: 2000
+								});
+							})
+						},
+					},
+				})
+			})
+		</script>
+</body>
+
+</html>

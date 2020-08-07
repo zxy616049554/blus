@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.WxGroupDao">
+
+    <resultMap type="com.rk.entity.WxGroup" id="resultMapOfWxGroup">
+        <result column="g_id" property="gId" />
+        <result column="userwcId" property="userwcId" />
+        <result column="usergroupId" property="usergroupId" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+        <result column="groupNickName" property="groupNickName" />
+        <result column="chatRoomOwner" property="chatRoomOwner" />
+        <result column="bigHeadImgUrl" property="bigHeadImgUrl" />
+        <result column="smallHeadImgUrl" property="smallHeadImgUrl" />
+        <result column="v1" property="v1" />
+        <result column="memberCount" property="memberCount" />
+    </resultMap>
+  
+    <sql id="FieldsOfWxGroupDao">g_id, userwcId, usergroupId, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime,
+         groupNickName, chatRoomOwner, bigHeadImgUrl, smallHeadImgUrl,v1,memberCount</sql>
+	
+	<sql id="FieldsOfWxGroupDaoWithoutId">g_id, userwcId, usergroupId, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime,
+	      groupNickName, chatRoomOwner, bigHeadImgUrl, smallHeadImgUrl,v1,memberCount</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfWxGroup" parameterType="java.util.Map">
+        select <include refid="FieldsOfWxGroupDao" /> from wx_group
+        <where>
+			<if test="gId != null"> and g_id = #{gId}</if>
+			<if test="userwcId != null"> and userwcId = #{userwcId}</if>
+			<if test="usergroupId != null"> and usergroupId = #{usergroupId}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+			<if test="groupNickName != null"> and groupNickName = #{groupNickName}</if>
+			<if test="chatRoomOwner != null"> and chatRoomOwner = #{chatRoomOwner}</if>
+			<if test="bigHeadImgUrl != null"> and bigHeadImgUrl = #{bigHeadImgUrl}</if>
+			<if test="smallHeadImgUrl != null"> and smallHeadImgUrl = #{smallHeadImgUrl}</if>
+			<if test="v1 != null"> and v1 = #{v1}</if>
+			<if test="memberCount != null"> and memberCount = #{memberCount}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.WxGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into wx_group(
+            <include refid="FieldsOfWxGroupDaoWithoutId" />
+		) values (
+			#{gId}, #{userwcId}, #{usergroupId}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime},
+			#{groupNickName}, #{chatRoomOwner}, #{bigHeadImgUrl}, #{smallHeadImgUrl},#{v1},#{memberCount})
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.WxGroup" useGeneratedKeys="true" keyProperty="id">
+		update wx_group
+		<set>
+			<if test="gId != null"> g_id  = #{gId},</if>
+			<if test="userwcId != null"> userwcId  = #{userwcId},</if>
+			<if test="usergroupId != null"> usergroupId  = #{usergroupId},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+			<if test="groupNickName != null"> and groupNickName = #{groupNickName},</if>
+			<if test="chatRoomOwner != null"> and chatRoomOwner = #{chatRoomOwner},</if>
+			<if test="bigHeadImgUrl != null"> and bigHeadImgUrl = #{bigHeadImgUrl},</if>
+			<if test="smallHeadImgUrl != null"> and smallHeadImgUrl = #{smallHeadImgUrl},</if>
+			<if test="v1 != null"> and v1 = #{v1},</if>
+			<if test="memberCount != null"> and memberCount = #{memberCount},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+    <select id="getMessByRoomId" resultMap="resultMapOfWxGroup">
+        select <include refid="FieldsOfWxGroupDao" /> from wx_group
+        <where>
+			<if test="roomId != null"> and usergroupId = #{roomId}</if>
+		</where>
+    </select>
+    
+    <select id="getGroupMessByWcId" resultMap="resultMapOfWxGroup">
+        select <include refid="FieldsOfWxGroupDao" /> from wx_group
+        <where>
+			<if test="wcId != null"> and userwcId = #{wcId}</if>
+		</where>
+    </select>
+</mapper>

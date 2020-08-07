@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.ReplyMessageDao">
+
+    <resultMap type="com.rk.entity.ReplyMessage" id="resultMapOfReplyMessage">
+        <result column="reply_id" property="replyId" />
+        <result column="receiveMess" property="receiveMess" />
+        <result column="replyMess" property="replyMess" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+    </resultMap>
+  
+    <sql id="FieldsOfReplyMessageDao">reply_id, receiveMess, replyMess, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+	
+	<sql id="FieldsOfReplyMessageDaoWithoutId">reply_id, receiveMess, replyMess, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfReplyMessage" parameterType="java.util.Map">
+        select <include refid="FieldsOfReplyMessageDao" /> from reply_message
+        <where>
+			<if test="replyId != null"> and reply_id = #{replyId}</if>
+			<if test="receiveMess != null"> and receiveMess = #{receiveMess}</if>
+			<if test="replyMess != null"> and replyMess = #{replyMess}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.ReplyMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into reply_message(
+            <include refid="FieldsOfReplyMessageDaoWithoutId" />
+		) values (
+			#{replyId}, #{receiveMess}, #{replyMess}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.ReplyMessage" useGeneratedKeys="true" keyProperty="id">
+		update reply_message
+		<set>
+			<if test="replyId != null"> reply_id  = #{replyId},</if>
+			<if test="receiveMess != null"> receiveMess  = #{receiveMess},</if>
+			<if test="replyMess != null"> replyMess  = #{replyMess},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="getMessByReceiveMess" resultMap="resultMapOfReplyMessage" >
+        select <include refid="FieldsOfReplyMessageDao" /> from reply_message
+        <where>
+			<if test="receiveMess != null"> and receiveMess like CONCAT('%',#{receiveMess},'%')</if>
+		</where>
+    </select>
+
+    <select id="getMessByReceive" resultMap="resultMapOfReplyMessage" >
+        select <include refid="FieldsOfReplyMessageDao" /> from reply_message
+        <where>
+			<if test="receiveMess != null"> and receiveMess =#{receiveMess}</if>
+		</where>
+    </select>
+    
+    <delete id="delete" parameterType="java.lang.Integer">
+    	delete from reply_message where reply_id = #{replyId}
+    </delete>
+</mapper>

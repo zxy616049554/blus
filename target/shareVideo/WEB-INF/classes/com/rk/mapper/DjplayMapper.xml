@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.DjplayDao">
+
+    <resultMap type="com.rk.entity.Djplay" id="resultMapOfDjplay">
+        <result column="id" property="id" />
+        <result column="chatRoomId" property="chatRoomId" />
+        <result column="chatUserWx" property="chatUserWx" />
+        <result column="count" property="count" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+    </resultMap>
+  
+    <sql id="FieldsOfDjplayDao">id, chatRoomId, chatUserWx, count, makeDate, makeTime, modifyDate, modifyTime, standby1, standby2</sql>
+	
+	<sql id="FieldsOfDjplayDaoWithoutId">chatRoomId, chatUserWx, count, makeDate, makeTime, modifyDate, modifyTime, standby1, standby2</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfDjplay" parameterType="java.util.Map">
+        select <include refid="FieldsOfDjplayDao" /> from djplay
+        <where>
+			<if test="id != null"> and id = #{id}</if>
+			<if test="chatRoomId != null"> and chatRoomId = #{chatRoomId}</if>
+			<if test="chatUserWx != null"> and chatUserWx = #{chatUserWx}</if>
+			<if test="count != null"> and count = #{count}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.Djplay" useGeneratedKeys="true" keyProperty="id">
+        insert into djplay(
+            <include refid="FieldsOfDjplayDaoWithoutId" />
+		) values (
+			#{chatRoomId}, #{chatUserWx}, #{count}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}, #{standby1}, #{standby2}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.Djplay" useGeneratedKeys="true" keyProperty="id">
+		update djplay
+		<set>
+			<if test="id != null"> id  = #{id},</if>
+			<if test="chatRoomId != null"> chatRoomId  = #{chatRoomId},</if>
+			<if test="chatUserWx != null"> chatUserWx  = #{chatUserWx},</if>
+			<if test="count != null"> count  = #{count},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="getUserRoomCount" resultType="com.rk.entity.Djplay" parameterType="com.rk.entity.Djplay"> 
+		select <include refid="FieldsOfDjplayDao"/> from djplay where chatRoomId=#{chatRoomId} and chatUserWx=#{chatUserWx} and modifyDate=#{modifyDate}
+	</select>
+
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.MessReceivingDao">
+
+    <resultMap type="com.rk.entity.MessReceiving" id="resultMapOfMessReceiving">
+        <result column="mess_id" property="messId" />
+        <result column="mess_wcId" property="messWcId" />
+        <result column="account" property="account" />
+        <result column="messageType" property="messageType" />
+        <result column="data_fromUser" property="dataFromUser" />
+        <result column="data_fromGroup" property="dataFromGroup" />
+        <result column="data_toUser" property="dataToUser" />
+        <result column="data_msgId" property="dataMsgId" />
+        <result column="data_newMsgId" property="dataNewMsgId" />
+        <result column="data_msgType" property="dataMsgType" />
+        <result column="data_timestamp" property="dataTimestamp" />
+        <result column="data_content" property="dataContent" />
+        <result column="data_self" property="dataSelf" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+    </resultMap>
+  
+    <sql id="FieldsOfMessReceivingDao">mess_id, mess_wcId, account, messageType, data_fromUser, data_fromGroup, data_toUser, data_msgId, data_newMsgId, data_msgType, data_timestamp, data_content, data_self, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+	
+	<sql id="FieldsOfMessReceivingDaoWithoutId">mess_id, mess_wcId, account, messageType, data_fromUser, data_fromGroup, data_toUser, data_msgId, data_newMsgId, data_msgType, data_timestamp, data_content, data_self, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfMessReceiving" parameterType="java.util.Map">
+        select <include refid="FieldsOfMessReceivingDao" /> from mess_receiving
+        <where>
+			<if test="messId != null"> and mess_id = #{messId}</if>
+			<if test="messWcId != null"> and mess_wcId = #{messWcId}</if>
+			<if test="account != null"> and account = #{account}</if>
+			<if test="messageType != null"> and messageType = #{messageType}</if>
+			<if test="dataFromUser != null"> and data_fromUser = #{dataFromUser}</if>
+			<if test="dataFromGroup != null"> and data_fromGroup = #{dataFromGroup}</if>
+			<if test="dataToUser != null"> and data_toUser = #{dataToUser}</if>
+			<if test="dataMsgId != null"> and data_msgId = #{dataMsgId}</if>
+			<if test="dataNewMsgId != null"> and data_newMsgId = #{dataNewMsgId}</if>
+			<if test="dataMsgType != null"> and data_msgType = #{dataMsgType}</if>
+			<if test="dataTimestamp != null"> and data_timestamp = #{dataTimestamp}</if>
+			<if test="dataContent != null"> and data_content = #{dataContent}</if>
+			<if test="dataSelf != null"> and data_self = #{dataSelf}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.MessReceiving" useGeneratedKeys="true" keyProperty="id">
+        insert into mess_receiving(
+            <include refid="FieldsOfMessReceivingDaoWithoutId" />
+		) values (
+			#{messId}, #{messWcId}, #{account}, #{messageType}, #{dataFromUser}, #{dataFromGroup}, #{dataToUser}, #{dataMsgId}, #{dataNewMsgId}, #{dataMsgType}, #{dataTimestamp}, #{dataContent}, #{dataSelf}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.MessReceiving" useGeneratedKeys="true" keyProperty="id">
+		update mess_receiving
+		<set>
+			<if test="messId != null"> mess_id  = #{messId},</if>
+			<if test="messWcId != null"> mess_wcId  = #{messWcId},</if>
+			<if test="account != null"> account  = #{account},</if>
+			<if test="messageType != null"> messageType  = #{messageType},</if>
+			<if test="dataFromUser != null"> data_fromUser  = #{dataFromUser},</if>
+			<if test="dataFromGroup != null"> data_fromGroup  = #{dataFromGroup},</if>
+			<if test="dataToUser != null"> data_toUser  = #{dataToUser},</if>
+			<if test="dataMsgId != null"> data_msgId  = #{dataMsgId},</if>
+			<if test="dataNewMsgId != null"> data_newMsgId  = #{dataNewMsgId},</if>
+			<if test="dataMsgType != null"> data_msgType  = #{dataMsgType},</if>
+			<if test="dataTimestamp != null"> data_timestamp  = #{dataTimestamp},</if>
+			<if test="dataContent != null"> data_content  = #{dataContent},</if>
+			<if test="dataSelf != null"> data_self  = #{dataSelf},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="getGroupMessage" resultMap="resultMapOfMessReceiving">
+		SELECT * FROM  mess_receiving GROUP BY data_fromUser
+	</select>
+ 
+</mapper>

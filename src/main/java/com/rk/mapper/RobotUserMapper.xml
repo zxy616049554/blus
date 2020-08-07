@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.rk.dao.RobotUserDao">
+
+    <resultMap type="com.rk.entity.RobotUser" id="resultMapOfRobotUser">
+        <result column="r_id" property="rId" />
+        <result column="r_username" property="rUsername" />
+        <result column="r_password" property="rPassword" />
+        <result column="r_phone" property="rPhone" />
+        <result column="r_usertype" property="rUsertype" />
+        <result column="standby1" property="standby1" />
+        <result column="standby2" property="standby2" />
+        <result column="makeDate" property="makeDate" />
+        <result column="makeTime" property="makeTime" />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="modifyTime" property="modifyTime" />
+    </resultMap>
+  
+    <sql id="FieldsOfRobotUserDao">r_id, r_username, r_password, r_phone, r_usertype, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+	
+	<sql id="FieldsOfRobotUserDaoWithoutId">, r_idr_username, r_password, r_phone, r_usertype, standby1, standby2, makeDate, makeTime, modifyDate, modifyTime</sql>
+  
+  
+    <select id="findByParams" resultMap="resultMapOfRobotUser" parameterType="java.util.Map">
+        select <include refid="FieldsOfRobotUserDao" /> from robot_user
+        <where>
+			<if test="rId != null"> and r_id = #{rId}</if>
+			<if test="rUsername != null"> and r_username like CONCAT('%',#{rUsername},'%')</if>
+			<if test="rPassword != null"> and r_password = #{rPassword}</if>
+			<if test="rPhone != null"> and r_phone = #{rPhone}</if>
+			<if test="rUsertype != null"> and r_usertype = #{rUsertype}</if>
+			<if test="standby1 != null"> and standby1 = #{standby1}</if>
+			<if test="standby2 != null"> and standby2 = #{standby2}</if>
+			<if test="makeDate != null"> and makeDate = #{makeDate}</if>
+			<if test="makeTime != null"> and makeTime = #{makeTime}</if>
+			<if test="modifyDate != null"> and modifyDate = #{modifyDate}</if>
+			<if test="modifyTime != null"> and modifyTime = #{modifyTime}</if>
+		</where>
+		<if test="sqlOrderBy != null">
+			order by ${sqlOrderBy}
+		</if>
+		<if test="sqlLimit != null">
+			limit ${sqlLimit}
+		</if>
+    </select>
+	
+    <insert id="save" parameterType="com.rk.entity.RobotUser" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_user(
+            <include refid="FieldsOfRobotUserDaoWithoutId" />
+		) values (
+			, #{rId}#{rUsername}, #{rPassword}, #{rPhone}, #{rUsertype}, #{standby1}, #{standby2}, #{makeDate}, #{makeTime}, #{modifyDate}, #{modifyTime}	)
+    </insert>
+
+	<update id="update" parameterType="com.rk.entity.RobotUser" useGeneratedKeys="true" keyProperty="id">
+		update robot_user
+		<set>
+			<if test="rId != null"> r_id  = #{rId},</if>
+			<if test="rUsername != null"> r_username  = #{rUsername},</if>
+			<if test="rPassword != null"> r_password  = #{rPassword},</if>
+			<if test="rPhone != null"> r_phone  = #{rPhone},</if>
+			<if test="rUsertype != null"> r_usertype  = #{rUsertype},</if>
+			<if test="standby1 != null"> standby1  = #{standby1},</if>
+			<if test="standby2 != null"> standby2  = #{standby2},</if>
+			<if test="makeDate != null"> makeDate  = #{makeDate},</if>
+			<if test="makeTime != null"> makeTime  = #{makeTime},</if>
+			<if test="modifyDate != null"> modifyDate  = #{modifyDate},</if>
+			<if test="modifyTime != null"> modifyTime  = #{modifyTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+</mapper>
